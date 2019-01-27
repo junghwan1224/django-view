@@ -6,7 +6,9 @@
 
 > View는 필요한 데이타를 모델 (혹은 외부)에서 가져와서 적절히 가공하여 웹 페이지 결과를 만들도록 컨트롤하는 역할을 한다.
 >
-> 일반 MVC Framework에서 말하는 Controller와 비슷한 역할을 한다. 엄연히는 다름
+> 일반 MVC Framework에서 말하는 Controller와 비슷한 역할을 한다. 
+>
+> 비슷할 뿐이지 같은건 아님(엄연히 다름)
 >
 > [참고](http://pythonstudy.xyz/python/article/306-Django-%EB%B7%B0-View)
 
@@ -225,7 +227,7 @@ view에서 사용하는 객체나 함수를 좀 더 편하게 사용할 수 있�
 
 
 
-**decorator**
+**Decorator**
 
 [login_required](https://docs.djangoproject.com/en/2.1/topics/auth/default/#the-login-required-decorator)
 
@@ -257,5 +259,54 @@ def only_post(request, pk):
 
 
 
+
+
 **CBV(Class Based View)**
+
+> - Organization of code related to specific HTTP methods (`GET`, `POST`, etc.) can be addressed by separate methods instead of conditional branching.
+> - Object oriented techniques such as mixins (multiple inheritance) can be used to factor code into reusable components.
+
+
+
+- FBV(Function Based View)
+
+  ```python
+  # urls.py
+  app_name = 'blog'
+
+  urlpatterns = [
+      path('/list', views.post_list, name='post_list'),
+  ]
+  ```
+
+  ```python
+  # views.py
+  def post_list(request):
+      posts = Post.objects.all()
+      return render(request, 'blog/blog_list.html', {'posts': posts})
+  ```
+
+- CBV(Class Based View)
+
+  ```python
+  # urls.py
+  from .views import PostList
+
+  app_name = 'blog'
+
+  urlpatterns = [
+      path('/list', PostList.as_view(), name='post_list'),
+  ]
+  ```
+
+  ```python
+  # views.py
+  class PostList(View):
+
+      def get(self, request):
+          posts = Post.objects.all()
+          return render(request, 'blog/blog_list.html', {'posts': posts})
+  ```
+
+  ​
 
