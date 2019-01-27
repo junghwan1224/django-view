@@ -84,6 +84,7 @@ def my_view(request):
 use with ajax
 
 ```javascript
+// ajaxTest.js
 var username = 'jeonghwan';
 var data = {
   'name': username
@@ -268,6 +269,9 @@ def only_post(request, pk):
 
 > - Organization of code related to specific HTTP methods (`GET`, `POST`, etc.) can be addressed by separate methods instead of conditional branching.
 > - Object oriented techniques such as mixins (multiple inheritance) can be used to factor code into reusable components.
+> - [참고1](https://docs.djangoproject.com/ko/2.1/topics/class-based-views/intro/)
+> - [참고2](https://docs.djangoproject.com/en/2.1/topics/class-based-views/)
+> - [참고3](https://docs.djangoproject.com/en/2.1/ref/class-based-views/)
 
 
 
@@ -309,6 +313,9 @@ def only_post(request, pk):
       def get(self, request):
           posts = Post.objects.all()
           return render(request, 'blog/blog_list.html', {'posts': posts})
+      
+      def post(self, request):
+          do_something()
   ```
 
   ​
@@ -341,6 +348,112 @@ def only_post(request, pk):
   ```
 
   ​
+
+  ListView
+
+  ```python
+  from django.views.generic.list import ListView
+
+  class PostListView(ListView):
+      """
+      template_name 디폴트 값은 '모델명 소문자_list.html', post.html
+      컨텍스트 변수 디폴트 값은 object_list
+      """
+      
+      model = Post
+      template_name = 'blog/blog_list_view.html' # 템플릿 파일 지정
+      context_object_name = 'posts' # 컨텍스트 변수 이름 지정
+      paginate_by = 5 # 페이징 처리를 위해 선언 한 페이지당 5개 글
+      
+      def get_queryset(self):
+          return Post.objects.filter(published_date__lte=timezone.now())
+  ```
+
+  ```html
+  <!-- blog_list_view.html -->
+
+  <!-- get_queryset() 메소드에서 가져온 값의 존재 유무 확인 -->
+  {% if posts %}
+    <ul>
+      <!-- 있으니까 쫙 나열 -->
+      {% for post in posts %}
+        <li><a href="{% url 'blog:post_detail' post.pk %}">{{ post.title }}</a></li>
+      {% endfor %}
+    </ul>
+
+  {% else %}
+    <p>No post</p>
+  {% endif %}
+
+  <!-- 페이징 처리 -->
+  {% if is_paginated %}
+  <ul class='pagination'>
+
+    <!-- 현재 페이지를 기준으로 이전 페이지가 있으면 -->
+    {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}">&laquo</a></li>
+    {% else %}<!-- 없으면 -->
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+
+
+    <!-- 페이지 번호 표시 -->
+    {% for i in paginator.page_range %}
+
+    	<!-- 페이지 번호가 현재 있는 페이지와 동일한 경우 -->
+      {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %} <!-- 다른 경우 이동할 수 있도록 a 태그 사용 -->
+        <li><a hreef="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+
+    {% endfor %}
+
+
+    <!-- 현재 페이지를 기준으로 다음 페이지가 있으면 -->
+    {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}">&raquo</a></li>
+    {% else %}<!-- 없으면 -->
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+
+  </ul>
+  {% endif %}
+  ```
+
+  ​
+
+  DetailView
+
+  ```python
+  from django.views.generic.detail import DetailView
+
+  class PostDetailView(DetailView):
+      
+      """
+      템플릿 파일 디폴트 : 모델명 소문자_detail.html
+      컨텍스트 변수 디폴트 : object
+      url의 pk 파라미터 값을 활용하여 해당 값 조회
+      """
+      
+      model = Post
+      template_name = 'blog/blog_detail_view.html'
+      context_object_name = 'post'
+  ```
+
+  ```html
+  <!-- blog_detail_view.html -->
+  <div class="post">
+          {% if post.published_date %}
+              <div class="date">
+                  {{ post.published_date }}
+              </div>
+          {% endif %}
+
+          <h1>{{ post.title }}</h1>
+          <p>{{ post.text|linebreaksbr }}</p>
+      </div>
+  ```
 
   ​
 
