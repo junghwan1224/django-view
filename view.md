@@ -8,7 +8,7 @@
 >
 > 일반 MVC Framework에서 말하는 Controller와 비슷한 역할을 한다. 
 >
-> 비슷할 뿐이지 같은건 아님(엄연히 다름)
+> 비슷할 뿐이지 같은건 아님
 >
 > [참고](http://pythonstudy.xyz/python/article/306-Django-%EB%B7%B0-View)
 
@@ -227,7 +227,10 @@ view에서 사용하는 객체나 함수를 좀 더 편하게 사용할 수 있�
 
 
 
+
 **Decorator**
+
+기존의 코드에 기능을 추가하기 위해 사용
 
 [login_required](https://docs.djangoproject.com/en/2.1/topics/auth/default/#the-login-required-decorator)
 
@@ -307,6 +310,37 @@ def only_post(request, pk):
           posts = Post.objects.all()
           return render(request, 'blog/blog_list.html', {'posts': posts})
   ```
+
+  ​
+
+  TemplateView
+
+  - tempate_name 변수에 파일명이나 경로 지정해주면 요청 처리
+  - get_context_data 메서드 : context 데이터 처리, 코드 까보면 Mixin 개념이 활용된 것을 볼 수 있다. [참고](https://blueshw.github.io/2016/03/08/django-extend-view-using-mixin/)
+
+  ```python
+  from django.views.generic import TemplateView
+
+  class PostList(TemplateView):
+      template_name = 'blog/blog_list.html'
+      
+      def get_context_data(self, **kwargs):
+          context = super(PostList, self).get_context_data(**kwargs)
+          posts = Post.objects.all()
+          context['posts'] = posts
+          return context
+  ```
+
+  ```python
+  # 위에서 오버라이딩한 get_context_data method
+  class ContextMixin(object):
+      def get_context_data(self, **kwargs):
+          if 'view' not in kwargs:
+              kwargs['view'] = self
+          return kwargs
+  ```
+
+  ​
 
   ​
 
