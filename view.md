@@ -10,7 +10,6 @@
 >
 > 비슷할 뿐이지 같은건 아님
 >
-> [참고](http://pythonstudy.xyz/python/article/306-Django-%EB%B7%B0-View)
 
 > 뷰(*view*) 는 애플리케이션의 "로직"을 넣는 곳(djangogirls)
 
@@ -271,7 +270,7 @@ def only_post(request, pk):
 > - Object oriented techniques such as mixins (multiple inheritance) can be used to factor code into reusable components.
 > - [참고1](https://docs.djangoproject.com/ko/2.1/topics/class-based-views/intro/)
 > - [참고2](https://docs.djangoproject.com/en/2.1/topics/class-based-views/)
-> - [참고3](https://docs.djangoproject.com/en/2.1/ref/class-based-views/)
+> - [Class-based views API reference](https://docs.djangoproject.com/en/2.1/ref/class-based-views/)
 
 
 
