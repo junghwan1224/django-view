@@ -404,7 +404,7 @@ def only_post(request, pk):
       {% if page_obj.number == i %}
         <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
       {% else %} <!-- 다른 경우 이동할 수 있도록 a 태그 사용 -->
-        <li><a hreef="?page={{ i }}">{{ i }}</a></li>
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
       {% endif %}
 
     {% endfor %}
