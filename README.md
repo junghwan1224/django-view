@@ -1,5 +1,3 @@
-# django-view
-django view 정리
 
 ## view in django
 
