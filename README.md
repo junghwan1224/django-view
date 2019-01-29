@@ -308,6 +308,8 @@ def only_post(request, pk):
 
   ```python
   # views.py
+  from django.views import View
+  
   class PostList(View):
 
       def get(self, request):
