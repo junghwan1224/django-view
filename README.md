@@ -1,3 +1,4 @@
+
 ## view in django
 
 **view 란?**
@@ -307,6 +308,8 @@ def only_post(request, pk):
 
   ```python
   # views.py
+  from django.views import View
+  
   class PostList(View):
 
       def get(self, request):
@@ -355,7 +358,7 @@ def only_post(request, pk):
 
   class PostListView(ListView):
       """
-      template_name 디폴트 값은 '모델명 소문자_list.html', post.html
+      template_name 디폴트 값은 '모델명 소문자_list.html', post_list.html
       컨텍스트 변수 디폴트 값은 object_list
       """
       
@@ -430,7 +433,7 @@ def only_post(request, pk):
   class PostDetailView(DetailView):
       
       """
-      템플릿 파일 디폴트 : 모델명 소문자_detail.html
+      템플릿 파일 디폴트 : 모델명 소문자_detail.html ... post_detail.html
       컨텍스트 변수 디폴트 : object
       url의 pk 파라미터 값을 활용하여 해당 값 조회
       """
