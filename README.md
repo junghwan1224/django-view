@@ -9,8 +9,6 @@
 >
 > 일반 MVC Framework에서 말하는 Controller와 비슷한 역할을 한다. 
 >
-> 비슷할 뿐이지 같은건 아님
->
 
 > 뷰(*view*) 는 애플리케이션의 "로직"을 넣는 곳(djangogirls)
 
